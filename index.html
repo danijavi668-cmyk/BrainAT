@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Science Interactive Exhibit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 0 0 50px 50px;
+        }
+        
+        .brain-model {
+            position: relative;
+            perspective: 1000px;
+        }
+        
+        .brain-hemisphere {
+            width: 200px;
+            height: 180px;
+            background: linear-gradient(45deg, #dcfce7, #bbf7d0);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .brain-hemisphere:hover {
+            transform: rotateY(15deg);
+        }
+        
+        .neuron {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        .brain-region {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .brain-region:hover {
+            transform: scale(1.05);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .neural-path {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .neural-path::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: neuralFlow 3s linear infinite;
+        }
+        
+        @keyframes neuralFlow {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .interactive-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        .interactive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .highlight-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .brain-wave {
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+            animation: wave 4s linear infinite;
+        }
+        
+        @keyframes wave {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <div class="brain-hemisphere mr-3"></div>
+                    <span class="text-xl font-bold text-gray-800">NeuroExplorer</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#brain-structure" class="text-gray-600 hover:text-blue-600 transition-colors">Brain Structure</a>
+                    <a href="#neurons" class="text-gray-600 hover:text-blue-600 transition-colors">Neurons</a>
+                    <a href="#functions" class="text-gray-600 hover:text-blue-600 transition-colors">Functions</a>
+                    <a href="#interactive" class="text-gray-600 hover:text-blue-600 transition-colors">Interactive</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section py-20 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 font-['Space_Grotesk']">
+                Explore the <span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-pink-400">Human Brain</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto">
+                Journey through the most complex organ in the human body and discover the marvels of neuroscience
+            </p>
+            <div class="brain-model mx-auto mb-8">
+                <div class="brain-hemisphere mx-auto">
+                    <!-- Neural activity dots -->
+                    <div class="neuron" style="top: 30px; left: 50px; animation-delay: 0s;"></div>
+                    <div class="neuron" style="top: 70px; left: 80px; animation-delay: 0.5s;"></div>
+                    <div class="neuron" style="top: 110px; left: 40px; animation-delay: 1s;"></div>
+                    <div class="neuron" style="top: 50px; left: 120px; animation-delay: 1.5s;"></div>
+                </div>
+            </div>
+            <button onclick="scrollToSection('brain-structure')" class="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+                Begin Exploration
+            </button>
+        </div>
+    </section>
+
+    <!-- Brain Structure Section -->
+    <section id="brain-structure" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-16">Brain Structure & Regions</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1106c763-6803-416d-87c8-d194cb93ccec.png" alt="Detailed cross-section of human brain showing cerebral cortex, cerebellum, brain stem and limbic system with color-coded regions" class="rounded-2xl shadow-2xl w-full" />
+                    
+                    <!-- Interactive region highlights -->
+                    <div class="absolute top-20 left-1/4 brain-region p-2 bg-blue-100 rounded-lg cursor-pointer" 
+                         onmouseover="showRegionInfo('cerebrum')">
+                        <span class="text-sm font-semibold">Cerebrum</span>
+                    </div>
+                    <div class="absolute top-60 left-1/3 brain-region p-2 bg-green-100 rounded-lg cursor-pointer"
+                         onmouseover="showRegionInfo('cerebellum')">
+                        <span class="text-sm font-semibold">Cerebellum</span>
+                    </div>
+                    <div class="absolute top-80 left-1/2 brain-region p-2 bg-purple-100 rounded-lg cursor-pointer"
+                         onmouseover="showRegionInfo('brainstem')">
+                        <span class="text-sm font-semibold">Brain Stem</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <div id="region-info" class="p-6 bg-white rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">Select a Brain Region</h3>
+                        <p class="text-gray-600">Hover over the colored markers on the brain diagram to learn about each major region and its functions.</p>
+                    </div>
+                    
+                    <div class="mt-8 grid gap-6">
+                        <div class="interactive-card p-6">
+                            <h4 class="text-xl font-semibold mb-3">Cerebral Cortex</h4>
+                            <p class="text-gray-600 mb-4">The outermost layer of the brain, responsible for higher cognitive functions including thought, language, and consciousness.</p>
+                            <div class="neural-path h-1 bg-gray-200 rounded-full mb-3"></div>
+                            <span class="text-sm text-blue-600">4 main lobes: Frontal, Parietal, Temporal, Occipital</span>
+                        </div>
+                        
+                        <div class="interactive-card p-6">
+                            <h4 class="text-xl font-semibold mb-3">Limbic System</h4>
+                            <p class="text-gray-600 mb-4">The emotional center of the brain, involved in memory formation, emotional responses, and motivation.</p>
+                            <div class="neural-path h-1 bg-gray-200 rounded-full mb-3"></div>
+                            <span class="text-sm text-green-600">Includes: Hippocampus, Amygdala, Hypothalamus</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Neurons Section -->
+    <section id="neurons" class="py-20 bg-gray-50 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-16">The Building Blocks: Neurons</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6898210b-7e74-4bed-b06b-2287ae941dce.png" alt="Detailed illustration of a neuron showing dendrites, cell body, axon, and synaptic terminals with neurotransmitter activity" class="rounded-2xl shadow-2xl w-full mb-8" />
+                    
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Neural Communication</h3>
+                        <p class="text-gray-600 mb-4">Neurons communicate through electrical and chemical signals across synapses, creating the complex network that enables thought, memory, and action.</p>
+                        <div class="flex space-x-4">
+                            <div class="text-center">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <span class="text-2xl">⚡</span>
+                                </div>
+                                <span class="text-sm">Electrical Signals</span>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <span class="text-2xl">🧪</span>
+                                </div>
+                                <span class="text-sm">Chemical Neurotransmitters</span>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <span class="text-2xl">🔄</span>
+                                </div>
+                                <span class="text-sm">Synaptic Transmission</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="interactive-card p-6 mb-6">
+                        <h4 class="text-xl font-semibold mb-3">Dendrites</h4>
+                        <p class="text-gray-600">Branch-like extensions that receive signals from other neurons and transmit them toward the cell body.</p>
+                    </div>
+                    
+                    <div class="interactive-card p-6 mb-6">
+                        <h4 class="text-xl font-semibold mb-3">Axon</h4>
+                        <p class="text-gray-6
